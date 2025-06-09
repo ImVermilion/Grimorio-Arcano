@@ -212,14 +212,48 @@ function showEntryContent(categoryIndex, entryIndex) {
   currentCategoryIndex = categoryIndex;
   currentEntryIndex = entryIndex;
 
+  const wordsPerPage = 300; // ajustable
+  const contentWords = entry.content.split(/\s+/);
+  const totalPages = Math.ceil(contentWords.length / wordsPerPage);
+
+  let currentPage = 0;
+
+  function renderPage(pageIndex) {
+  const start = pageIndex * wordsPerPage;
+  const end = start + wordsPerPage;
+  const pageWords = contentWords.slice(start, end).join(" ");
+  let pageHTML = pageWords.replace(/\n/g, "<br>");
+
+  if (entry.image && pageHTML.includes("[imagen]")) {
+    pageHTML = pageHTML.replace("[imagen]", `<img src="${entry.image}" class="entry-image" />`);
+  }
+
   const rightPage = document.getElementById('rightPage');
   rightPage.innerHTML = `
     <h2>${entry.title}</h2>
-    <p>${entry.content.replace(/\n/g, "<br>")}</p>
-    ${entry.image ? `<img src="${entry.image}" class="entry-image" />` : ''}
-    <button class="edit-button" onclick="editCurrentEntry()">Editar esta entrada</button>
+    <div class="paged-content">
+      <p>${pageHTML}</p>
+    </div>
+    <div class="page-navigation">
+      ${pageIndex > 0 ? `<button id="prevPage">←</button>` : ''}
+      <span>Página ${pageIndex + 1} / ${totalPages}</span>
+      ${pageIndex < totalPages - 1 ? `<button id="nextPage">→</button>` : ''}
+    </div>
+    ${pageIndex === totalPages - 1 ? `<button class="edit-button" onclick="editCurrentEntry()">Editar esta entrada</button>` : ''}
   `;
+
+
+    if (pageIndex > 0) {
+      document.getElementById("prevPage").onclick = () => renderPage(pageIndex - 1);
+    }
+    if (pageIndex < totalPages - 1) {
+      document.getElementById("nextPage").onclick = () => renderPage(pageIndex + 1);
+    }
+  }
+
+  renderPage(currentPage);
 }
+
 
 function editCurrentEntry() {
   if (currentCategoryIndex === null || currentEntryIndex === null) return;

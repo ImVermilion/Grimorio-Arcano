@@ -300,3 +300,48 @@ body {
 .hidden {
   display: none !important;
 }
+
+.paged-content {
+  max-width: 90%;
+  max-height: 400px;
+  overflow: hidden;
+  text-align: justify;
+  margin: 20px auto;
+  padding: 10px;
+}
+
+.page-navigation {
+  position: absolute;
+  bottom: 20px;
+  right: 10px;
+  font-size: 12px;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px 8px;
+  border-radius: 6px;
+  color: #3a1f0f;
+
+}
+
+.page-navigation button {
+  font-family: 'MedievalSharp', cursive;
+  font-size: 10px;
+  padding: 4px 10px;
+  background: #d4c097;
+  color: #3a1f0f;
+  border: 1px solid #a68c5e;
+  border-radius: 6px;
+  cursor: pointer;
+  box-shadow: 1px 1px 2px rgba(0,0,0,0.3);
+  transition: background 0.2s, transform 0.2s;
+}
+.page-navigation button:hover {
+  background: #e3d3aa;
+  transform: scale(1.03);
+}
+
+
+.page-navigation span {
+  font-weight: bold;
+}
