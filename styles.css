@@ -592,13 +592,14 @@ body,
 
 /* --- NUEVOS ESTILOS PARA ADAPTACIÓN A MÓVIL --- */
 
-@media (max-width: 800px), (orientation: portrait) {
+@media (max-width: 950px) and (orientation: landscape) {
   .book {
-    width: 95vw;
-    max-width: 700px;
+    width: 70vw;
+    max-width: 600px;
     height: auto;
+    max-height: 60vh;
     aspect-ratio: 16 / 9;
-    margin: 30px auto;
+    margin: 5vh auto;
     border-width: 8px;
     box-shadow: 0 0 30px rgba(0, 0, 0, 0.8);
     background-size: auto;
@@ -606,4 +607,5 @@ body,
   body {
     overflow: auto;
   }
+}
 }
