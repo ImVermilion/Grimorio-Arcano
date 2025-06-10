@@ -1,4 +1,3 @@
-
 body {
   margin: 0;
   padding: 0;
@@ -8,6 +7,7 @@ body {
   justify-content: center;
   align-items: center;
   height: 100vh;
+  
 }
 
 .book {
@@ -21,6 +21,7 @@ body {
   box-shadow: 0 0 60px rgba(0, 0, 0, 0.9);
   position: relative;
   overflow: hidden;
+
 }
 
 .page {
@@ -58,7 +59,7 @@ body {
 .page button {
   margin-top: 10px;
   font-size: 16px;
-  background-color: #6a1a1a;
+  
   color: white;
   border: none;
   padding: 6px 12px;
@@ -173,12 +174,49 @@ body {
   cursor: pointer;
 }
 
+.category-btn-group {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+}
+
+.category-add,
 .category-remove {
-  color: red;
-  margin-left: 8px;
-  font-weight: bold;
+  display: inline-block;
   font-size: 18px;
+  width: 24px;
+  height: 24px;
+  line-height: 24px;
+  text-align: center;
+  border-radius: 50%;
+  border: 1px solid #a68c5e;
+  background: #e3d3aa;
+  color: #3a1f0f;
   cursor: pointer;
+  transition: background 0.2s, color 0.2s, transform 0.2s, box-shadow 0.2s;
+  margin-left: 0;
+  margin-right: 0;
+  box-shadow: 0 1px 4px rgba(60,40,10,0.04);
+  user-select: none;
+}
+
+.category-add:hover,
+.category-remove:hover {
+  background: #f4e5c0;
+  color: #7a4b13;
+  transform: scale(1.12);
+  box-shadow: 0 2px 8px #e3d3aa;
+}
+
+.category-remove {
+  color: #a33;
+  border-color: #a33;
+  background: #f7e0e0;
+}
+.category-remove:hover {
+  background: #f4bcbc;
+  color: #fff;
+  border-color: #a33;
 }
 #rightPage button.edit-button {
   margin-top: 20px;
@@ -194,7 +232,25 @@ body {
   background-color: #222;
 }
 
-
+.edit-button {
+  display: block;
+  margin: 24px auto 0 auto;
+  padding: 8px 18px;
+  background: #e3d3aa;
+  color: #3a1f0f;
+  border: 1.5px solid #a68c5e;
+  border-radius: 8px;
+  font-family: 'MedievalSharp', cursive;
+  font-size: 16px;
+  cursor: pointer;
+  box-shadow: 0 2px 8px rgba(60,40,10,0.08);
+  transition: background 0.2s, transform 0.2s;
+}
+.edit-button:hover {
+  background: #f4e5c0;
+  color: #7a4b13;
+  transform: scale(1.04);
+}
 
 /* Botón pequeño para añadir entrada */
 
@@ -234,10 +290,10 @@ body {
 /* Botones inferiores discretos */
 .bottom-buttons {
   position: absolute;
-  bottom: 20px;
-  left: 30px;
+  bottom: 10px;
+  left: 10px;
   display: flex;
-  flex-direction: column;
+  
   gap: 6px;
 }
 
@@ -247,7 +303,7 @@ body {
   padding: 5px 10px;
   background: #d4c097;
   color: #3a1f0f;
-  border: 1px solid #a68c5e;
+  border: 1px solid #a68c5e94;
   border-radius: 6px;
   cursor: pointer;
   box-shadow: 1px 1px 2px rgba(0,0,0,0.3);
@@ -302,12 +358,19 @@ body {
 }
 
 .paged-content {
-  max-width: 90%;
-  max-height: 400px;
-  overflow: hidden;
+  width: 100%;
+  max-width: 700px;
+  max-height: 80vh;
+  min-height: 200px;
+  overflow-y: auto;
+  overflow-x: hidden;
   text-align: justify;
-  margin: 20px auto;
-  padding: 10px;
+  margin: 0 auto 20px auto;
+  position: relative;
+  background: transparent;
+  padding: 0 10px 40px 10px;
+  box-sizing: border-box;
+  border-radius: 12px;
 }
 
 .page-navigation {
@@ -321,6 +384,7 @@ body {
   padding: 4px 8px;
   border-radius: 6px;
   color: #3a1f0f;
+  
 
 }
 
@@ -344,4 +408,63 @@ body {
 
 .page-navigation span {
   font-weight: bold;
+}
+
+.entry-image {
+  display: block;
+  margin: 16px auto 20px auto;
+  max-width: 250px;
+  width: auto;
+  height: auto;
+  border: 2px solid #3a1f0f;
+  border-radius: 8px;
+  background: #f8f5e6;
+  box-shadow: 0 2px 8px rgba(60,40,10,0.08);
+}
+
+.edit-icon-button {
+  position: absolute;
+  top: 12px;
+  right: 18px;
+  background: none;
+  border: none;
+  color: #a68c5e;
+  font-size: 22px;
+  cursor: pointer;
+  opacity: 0.5;
+  transition: opacity 0.2s, color 0.2s, transform 0.2s;
+  z-index: 2;
+  padding: 0;
+  outline: none;
+}
+.edit-icon-button:hover {
+  opacity: 1;
+  color: #3a1f0f;
+  transform: scale(1.15);
+  text-shadow: 0 2px 8px #f4e5c0;
+}
+.page-content-block {
+  position: relative;
+}
+
+.category-add {
+  display: inline-block;
+  margin: 0 8px;
+  font-size: 18px;
+  color: #3a1f0f;
+  background: #e3d3aa;
+  border-radius: 50%;
+  width: 22px;
+  height: 22px;
+  line-height: 22px;
+  text-align: center;
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s, transform 0.2s;
+  border: 1px solid #a68c5e;
+  vertical-align: middle;
+}
+.category-add:hover {
+  background: #f4e5c0;
+  color: #7a4b13;
+  transform: scale(1.12);
 }

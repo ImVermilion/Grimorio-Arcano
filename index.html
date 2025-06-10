@@ -1,14 +1,15 @@
-
 <!DOCTYPE html>
 <html lang="es">
 <head>
   <meta charset="UTF-8" />
   <title>Grimorio Encantado</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <link rel="stylesheet" href="styles.css" />
   <link href="https://fonts.googleapis.com/css2?family=MedievalSharp&display=swap" rel="stylesheet" />
 </head>
 <body>
   <div class="book">
+    <div class="book-bg-pages"></div>
     <div class="page" id="leftPage">
       <h2>Índice</h2>
       <ul id="categoryList"></ul>
@@ -36,10 +37,9 @@
     <div class="formContainer">
       <h3>Nueva Entrada</h3>
       <input type="text" id="entryTitle" placeholder="Título del elemento..." />
-      <textarea id="entryContent" placeholder="Contenido..."></textarea>
-      <input type="file" id="entryImage" accept="image/*" />
-      <button onclick="saveEntry()">Guardar</button>
-      <button onclick="hideEntryForm()">Cancelar</button>
+      <div id="entryPagesContainer"></div>
+      <button type="button" onclick="saveEntry()">Guardar</button>
+      <button type="button" onclick="hideEntryForm()">Cancelar</button>
     </div>
   </div>
 
