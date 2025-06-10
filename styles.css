@@ -3,16 +3,18 @@ body {
   padding: 0;
   background: #1a0e2a;
   font-family: 'MedievalSharp', cursive;
+  min-height: 100vh;
+  min-width: 100vw;
+  width: 100vw;
+  height: 100vh;
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 100vh;
-  cursor: url('Feather.png') 0 24, auto;
-  
+  overflow: auto;
 }
 
 .book {
-  width: 960px;
+  width: 900px;
   height: 600px;
   display: flex;
   perspective: 2000px;
@@ -22,11 +24,11 @@ body {
   box-shadow: 0 0 60px rgba(0, 0, 0, 0.9);
   position: relative;
   overflow: hidden;
-
 }
 
 .page {
   width: 50%;
+  height: 100%;
   padding: 30px;
   box-sizing: border-box;
   background: #f4e5c0 url('https://www.transparenttextures.com/patterns/paper-fibers.png');
@@ -39,6 +41,19 @@ body {
   flex-direction: column;
   align-items: center;
   text-align: center;
+}
+
+.category-block,
+.paged-content,
+.formContainer,
+.entry-image {
+  max-width: 100%;
+  box-sizing: border-box;
+}
+
+/* Elimina o comenta TODOS los media queries que cambian tamaño del libro o páginas */
+@media (max-width: 700px), (max-height: 500px) {
+  /* NO CAMBIES tamaño del libro ni de las páginas aquí */
 }
 
 .page h2 {
@@ -120,6 +135,15 @@ input, textarea {
   margin-top: 15px;
   border: 2px solid #3a1f0f;
   border-radius: 8px;
+  display: block;
+  margin: 16px auto 20px auto;
+  max-width: 250px;
+  width: auto;
+  height: auto;
+  border: 2px solid #3a1f0f;
+  border-radius: 8px;
+  background: #f8f5e6;
+  box-shadow: 0 2px 8px rgba(60,40,10,0.08);
 }
 
 #categoryList {
@@ -141,6 +165,10 @@ input, textarea {
   font-size: 20px;
   padding: 6px;
   border: none;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  cursor: pointer;
 }
 
 .category-content {
@@ -303,6 +331,11 @@ input, textarea {
   display: flex;
   
   gap: 6px;
+  position: static;
+  margin-top: 16px;
+  left: unset;
+  bottom: unset;
+  justify-content: center;
 }
 
 .bottom-buttons button {
@@ -544,3 +577,42 @@ body,
     transform: scale(1.3);
   }
 }
+
+@media (max-width: 700px) {
+  .book {
+    width: 100vw;
+    height: auto;
+    min-width: 0;
+    min-height: 0;
+    border-radius: 0;
+    border-width: 6px;
+    box-shadow: none;
+  }
+  .page {
+    width: 100vw;
+    min-width: 0;
+    min-height: 0;
+    box-shadow: none;
+    border-radius: 0;
+    padding-left: 0;
+    padding-right: 0;
+  }
+  .category-block {
+    width: 98vw;
+    margin-left: 0;
+  }
+  .paged-content {
+    max-width: 98vw;
+    padding-left: 0;
+    padding-right: 0;
+  }
+  .entry-image {
+    max-width: 96vw;
+  }
+  .formContainer {
+    width: 98vw;
+    min-width: 0;
+    max-width: 420px;
+  }
+}
+
