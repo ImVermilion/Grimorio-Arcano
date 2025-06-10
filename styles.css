@@ -594,10 +594,10 @@ body,
 
 @media (max-width: 950px) and (orientation: landscape) {
   .book {
-    width: 70vw;
-    max-width: 600px;
+    width: 85vw;
+    max-width: 900px;
     height: auto;
-    max-height: 60vh;
+    max-height: 80vh;
     aspect-ratio: 16 / 9;
     margin: 5vh auto;
     border-width: 8px;
@@ -607,5 +607,4 @@ body,
   body {
     overflow: auto;
   }
-}
 }
