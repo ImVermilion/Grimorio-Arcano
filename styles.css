@@ -1,7 +1,11 @@
 body {
   margin: 0;
   padding: 0;
-  background: #1a0e2a;
+    background-image: url("background.png");
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-attachment: fixed; /* opcional */
   font-family: 'MedievalSharp', cursive;
   min-height: 100vh;
   min-width: 100vw;
@@ -483,9 +487,7 @@ body,
 .lang-flags-bar img {
   width: 22px;
   height: 16px;
-  border-radius: 3px;
-  border: 1px solid #a68c5e;
-  background: #fff;
+
   margin-right: 0;
   transition: box-shadow 0.2s;
 }
@@ -607,4 +609,34 @@ body,
   body {
     overflow: auto;
   }
+  .side-tab-buttons {
+    position: fixed;
+    top: 18px;
+    left: 10px;
+    flex-direction: row;
+    gap: 8px;
+    z-index: 1001;
+    bottom: unset;
+    background: none;
+  }
+  .side-tab-buttons button {
+    min-width: 80px;
+    font-size: 13px;
+    padding: 5px 10px 5px 7px;
+    border-radius: 10px;
+    gap: 5px;
+  }
+}
+
+.book img,
+.page-content-block img,
+.entry-image {
+  border: none !important;
+  box-shadow: none !important;
+  background: none !important;
+  padding: 0 !important;
+  margin: 0 auto !important;
+  display: block;
+  max-width: 100%;
+  height: auto;
 }
