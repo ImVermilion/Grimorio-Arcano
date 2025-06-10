@@ -37,17 +37,16 @@ body {
   box-shadow: inset 0 0 15px rgba(0,0,0,0.3);
   transition: transform 1s ease-in-out;
   backface-visibility: hidden;
-  overflow-y: auto;      /* Scroll solo si el contenido es mayor */
+  overflow-y: auto;
   overflow-x: hidden;
   display: flex;
   flex-direction: column;
   align-items: center;
   text-align: center;
-  scrollbar-width: thin; /* Scrollbar discreto en Firefox */
+  scrollbar-width: thin;
   scrollbar-color: #a68c5e46 #f4e5c000;
 }
 
-/* Scrollbar discreto en Chrome/Webkit */
 .page::-webkit-scrollbar {
   width: 7px;
   background: transparent;
@@ -62,11 +61,6 @@ body {
 .entry-image {
   max-width: 100%;
   box-sizing: border-box;
-}
-
-/* Elimina o comenta TODOS los media queries que cambian tamaño del libro o páginas */
-@media (max-width: 700px), (max-height: 500px) {
-  /* NO CAMBIES tamaño del libro ni de las páginas aquí */
 }
 
 .page h2 {
@@ -88,7 +82,6 @@ body {
 .page button {
   margin-top: 10px;
   font-size: 16px;
-  
   color: white;
   border: none;
   padding: 6px 12px;
@@ -100,17 +93,18 @@ body {
   background-color: #941f1f;
 }
 
-#formOverlay {
+#formOverlayCategory,
+#formOverlayEntry {
   position: fixed;
   top: 0;
   left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(0,0,0,0.8);
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0,0,0,0.6);
   display: flex;
   justify-content: center;
   align-items: center;
-  z-index: 10;
+  z-index: 1000;
 }
 
 .formContainer {
@@ -140,23 +134,7 @@ input, textarea {
 }
 
 .hidden {
-  display: none;
-}
-
-.entry-image {
-  max-width: 90%;
-  margin-top: 15px;
-  border: 2px solid #3a1f0f;
-  border-radius: 8px;
-  display: block;
-  margin: 16px auto 20px auto;
-  max-width: 250px;
-  width: auto;
-  height: auto;
-  border: 2px solid #3a1f0f;
-  border-radius: 8px;
-  background: #f8f5e6;
-  box-shadow: 0 2px 8px rgba(60,40,10,0.08);
+  display: none !important;
 }
 
 #categoryList {
@@ -203,39 +181,9 @@ input, textarea {
   text-decoration: underline;
 }
 
-.entry-remove {
-  color: red;
-  margin-left: 10px;
-  cursor: pointer;
-  font-weight: bold;
-  font-size: 16px;
-}
-
 @keyframes fadeIn {
   from { opacity: 0; }
   to { opacity: 1; }
-}
-
-.category-title {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  cursor: pointer;
-}
-
-
-#rightPage button.edit-button {
-  margin-top: 20px;
-  padding: 6px 12px;
-  font-size: 16px;
-  background-color: #444;
-  color: white;
-  border: none;
-  border-radius: 6px;
-  cursor: pointer;
-}
-#rightPage button.edit-button:hover {
-  background-color: #222;
 }
 
 .edit-button {
@@ -258,53 +206,6 @@ input, textarea {
   transform: scale(1.04);
 }
 
-
-
-/* Botones inferiores discretos */
-.bottom-buttons {
-  position: absolute;
-  left: 18px;
-  bottom: 18px;
-  display: flex;
-  gap: 10px;
-  z-index: 20;
-  background: none;      /* Sin fondo de grupo */
-  border-radius: 0;
-  padding: 0;
-  box-shadow: none;
-  align-items: center;
-}
-
-.bottom-buttons button {
-  width: 28px;
-  height: 28px;
-  min-width: 28px;
-  min-height: 28px;
-  border-radius: 50%;
-  border: 1.5px solid #a68c5e;
-  background: #f4e5c0;
-  color: #7a4b13;
-  font-size: 17px;
-  font-family: 'MedievalSharp', cursive;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  box-shadow: 0 2px 6px rgba(60,40,10,0.12);
-  cursor: pointer;
-  opacity: 0.92;
-  transition: background 0.2s, color 0.2s, transform 0.2s, opacity 0.2s;
-  padding: 0;
-  outline: none;
-  border-bottom: 2.5px solid #a68c5e33;
-}
-
-.bottom-buttons button:hover {
-  background: #e3d3aa;
-  color: #a33;
-  transform: scale(1.13);
-  opacity: 1;
-}
-
 .add-entry-link {
   font-family: 'MedievalSharp', cursive;
   font-size: 14px;
@@ -322,24 +223,6 @@ input, textarea {
   opacity: 1;
   text-decoration: underline;
   color: #3a1f0f;
-}
-
-#formOverlayCategory,
-#formOverlayEntry {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  background: rgba(0,0,0,0.6);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  z-index: 1000;
-}
-
-.hidden {
-  display: none !important;
 }
 
 .paged-content {
@@ -369,8 +252,6 @@ input, textarea {
   padding: 4px 8px;
   border-radius: 6px;
   color: #3a1f0f;
-  
-
 }
 
 .page-navigation button {
@@ -389,7 +270,6 @@ input, textarea {
   background: #e3d3aa;
   transform: scale(1.03);
 }
-
 
 .page-navigation span {
   font-weight: bold;
@@ -432,32 +312,9 @@ input, textarea {
   position: relative;
 }
 
-.category-add {
-  display: inline-block;
-  margin: 0 8px;
-  font-size: 18px;
-  color: #3a1f0f;
-  background: #e3d3aa;
-  border-radius: 50%;
-  width: 22px;
-  height: 22px;
-  line-height: 22px;
-  text-align: center;
-  cursor: pointer;
-  transition: background 0.2s, color 0.2s, transform 0.2s;
-  border: 1px solid #a68c5e;
-  vertical-align: middle;
-}
-.category-add:hover {
-  background: #f4e5c0;
-  color: #7a4b13;
-  transform: scale(1.12);
-}
-
-/* Botones tipo pestaña lateral para acciones principales */
 .side-tab-buttons {
   position: absolute;
-  bottom: 40px;    /* <-- Cambiado de top a bottom */
+  bottom: 40px;
   left: -8px;
   display: flex;
   flex-direction: column;
@@ -504,33 +361,6 @@ input, textarea {
   cursor: url('Feather.png') 0 24, auto !important;
 }
 
-.ink-effect {
-  position: fixed;
-  pointer-events: none;
-  width: 5px;
-  height: 10px;
-  border-radius: 50% 50% 60% 60% / 60% 60% 100% 100%;
-  background: radial-gradient(ellipse at 60% 70%, #2d0a0a 80%, transparent 100%);
-  opacity: 0.4;
-  z-index: 9999;
-  animation: ink-pop 0.6s cubic-bezier(.4,2,.6,.9) forwards;
-}
-
-@keyframes ink-pop {
-  0% {
-    opacity: 0.7;
-    transform: scale(0.7);
-  }
-  60% {
-    opacity: 0.4;
-    transform: scale(1.2);
-  }
-  100% {
-    opacity: 0;
-    transform: scale(1.6);
-  }
-}
-
 body,
 .book,
 .page,
@@ -552,18 +382,9 @@ body,
 }
 
 @keyframes ink-blot-pop {
-  0% {
-    opacity: 0.6;
-    transform: scale(0.7);
-  }
-  60% {
-    opacity: 0.32;
-    transform: scale(1.1);
-  }
-  100% {
-    opacity: 0;
-    transform: scale(1.3);
-  }
+  0% { opacity: 0.6; transform: scale(0.7); }
+  60% { opacity: 0.32; transform: scale(1.1); }
+  100% { opacity: 0; transform: scale(1.3); }
 }
 
 .color-palette {
@@ -575,9 +396,8 @@ body,
   border: none;
   box-shadow: none;
 }
-.color-palette.hidden {
-  display: none;
-}
+.color-palette.hidden { display: none; }
+
 .color-swatch {
   width: 22px;
   height: 22px;
@@ -591,18 +411,6 @@ body,
 .color-swatch:hover {
   transform: scale(1.18);
   border-color: #3a1f0f;
-}
-.lang-flags img {
-  width: 22px;
-  height: 16px;
-  border-radius: 3px;
-  border: 1px solid #a68c5e;
-  background: #fff;
-  margin-right: 0;
-  transition: box-shadow 0.2s;
-}
-.lang-flags img:hover {
-  box-shadow: 0 0 6px #e3d3aa;
 }
 
 .top-bar-buttons {
@@ -641,25 +449,6 @@ body,
   transform: scale(1.04);
 }
 
-.lang-flags-bar {
-  position: fixed;
-  top: 18px;
-  right: 24px;
-  z-index: 100;
-  display: flex;
-  gap: 10px;
-  background: none;
-  box-shadow: none;
-  align-items: center;
-}
-
-/* Oculta la barra fija en responsive */
-@media (max-width: 950px), (max-height: 600px) {
-  .lang-flags-bar {
-    display: none !important;
-  }
-}
-
 .top-bar-menu {
   position: fixed;
   top: 18px;
@@ -669,23 +458,9 @@ body,
   align-items: center;
 }
 
-.menu-toggle {
-  display: none;
-}
+.menu-toggle { display: none; }
+.menu-icon { display: none; font-size: 32px; cursor: pointer; background: #f4e5c0; border: 2px solid #a68c5e; border-radius: 8px; padding: 4px 10px; z-index: 201; box-shadow: 1px 1px 8px rgba(60,40,10,0.10); }
 
-.menu-icon {
-  display: none;
-  font-size: 32px;
-  cursor: pointer;
-  background: #f4e5c0;
-  border: 2px solid #a68c5e;
-  border-radius: 8px;
-  padding: 4px 10px;
-  z-index: 201;
-  box-shadow: 1px 1px 8px rgba(60,40,10,0.10);
-}
-
-/* Por defecto, el menú está oculto en responsive */
 .menu-dropdown {
   display: flex;
   flex-direction: row;
@@ -705,95 +480,74 @@ body,
   margin: 0;
   padding: 0;
 }
-
-@media (max-width: 950px), (max-height: 600px) {
-  .menu-icon {
-    display: block;
-  }
-  .menu-dropdown {
-    display: none;
-    flex-direction: column;
-    background: #f4e5c0;
-    border: 2px solid #a68c5e;
-    border-radius: 12px;
-    position: absolute;
-    top: 44px;
-    right: 0;
-    padding: 12px 18px;
-    gap: 12px;
-    box-shadow: 0 4px 16px rgba(60,40,10,0.18);
-    z-index: 202;
-  }
-  .menu-toggle:checked ~ .menu-dropdown {
-    display: flex;
-  }
-  /* Solo la barra de banderas DENTRO del menú se muestra */
-  .top-bar-menu .menu-dropdown .lang-flags-bar {
-    display: flex !important;
-  }
+.lang-flags-bar img {
+  width: 22px;
+  height: 16px;
+  border-radius: 3px;
+  border: 1px solid #a68c5e;
+  background: #fff;
+  margin-right: 0;
+  transition: box-shadow 0.2s;
 }
+.lang-flags-bar img:hover { box-shadow: 0 0 6px #e3d3aa; }
 
+/* ESTA ES LA REGLA CLAVE: Oculta por defecto el botón del menú móvil */
 .color-menu-hamburguesa {
   display: none;
 }
 
 @media (max-width: 950px), (max-height: 600px) {
-  .color-menu-hamburguesa {
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-    margin-bottom: 10px;
-  }
-  .top-bar-buttons {
-    display: none !important;
-  }
+  .menu-icon { display: block; }
+  .menu-dropdown { display: none; flex-direction: column; background: #f4e5c0; border: 2px solid #a68c5e; border-radius: 12px; position: absolute; top: 44px; right: 0; padding: 12px 18px; gap: 12px; box-shadow: 0 4px 16px rgba(60,40,10,0.18); z-index: 202; }
+  .menu-toggle:checked ~ .menu-dropdown { display: flex; }
+  .top-bar-menu .menu-dropdown .lang-flags-bar { display: flex !important; }
+  /* Muestra el botón de color dentro del menú hamburguesa */
+  .color-menu-hamburguesa { display: flex; flex-direction: column; gap: 8px; margin-bottom: 10px; }
+  /* Oculta el botón de color original de la barra superior */
+  .top-bar-buttons { display: none !important; }
 }
+
 
 /* --- ESTILOS PARA BOTONES DE CATEGORÍA MÁS DISCRETOS --- */
 
-/* 1. Ocultamos el grupo de botones por defecto */
 .category-btn-group {
   display: flex;
-  gap: 4px; /* Aumentamos un poco el espacio entre botones */
-  align-items: right;
-  opacity: 0; /* Lo hacemos invisible */
-  transition: opacity 0.2s ease-in-out; /* Animación suave para aparecer */
+  gap: 8px;
+  align-items: center;
+  opacity: 0;
+  transition: opacity 0.2s ease-in-out;
 }
 
-/* 2. Hacemos que el grupo de botones aparezca al pasar el ratón por la fila */
 .category-block:hover .category-btn-group {
-  opacity: 1; /* Lo hacemos visible al pasar el ratón */
+  opacity: 1;
 }
 
-/* 3. Estilo base para TODOS los botones (sin fondos ni bordes) */
 .category-add,
 .category-remove,
 .category-edit {
-  display: flex;
-  font-size: 12px; /* Tamaño del icono */
-  padding: 1px 1px; /* Un poco de espacio para que sea fácil hacer clic */
+  display: inline-block;
+  font-size: 18px;
+  padding: 2px 4px;
   border-radius: 4px;
   cursor: pointer;
-  background: none; /* SIN fondo */
-  border: none; /* SIN borde */
-  color: #a68c5ec3; /* Un color discreto por defecto */
+  background: none;
+  border: none;
+  color: #a68c5e;
   transition: transform 0.2s, color 0.2s;
-  /* Eliminamos las propiedades de círculo (width, height, line-height, etc.) */
 }
 
-/* 4. Efectos hover para cada botón individual */
 .category-edit:hover {
-  color: #3f7a13; /* Verde para editar */
+  color: #3f7a13;
   transform: scale(1.2);
 }
 
 .category-add:hover {
-  color: #7a4b13; /* Marrón más intenso para añadir */
+  color: #7a4b13;
   transform: scale(1.2);
 }
 
 .category-remove:hover {
-  color: #a33; /* Rojo para eliminar */
+  color: #a33;
   transform: scale(1.2);
 }
 
@@ -818,4 +572,48 @@ body,
   -webkit-user-select: text;
   -moz-user-select: text;
   -ms-user-select: text;
+}
+
+
+/* --- NUEVOS ESTILOS PARA ADAPTACIÓN A MÓVIL --- */
+
+@media (max-width: 800px), (orientation: portrait) {
+
+  /* Hacemos el libro responsive y mantenemos la proporción 16:9 */
+  .book {
+    width: 95vw;
+    height: auto;
+    aspect-ratio: 16 / 9;
+    border-width: 8px;
+    box-shadow: 0 0 30px rgba(0, 0, 0, 0.8);
+    margin-top: 15px; /* Pequeño margen superior */
+  }
+
+  /* Reducimos el tamaño de los títulos y el padding de las páginas */
+  .page {
+    padding: 15px;
+  }
+  .page h2 {
+    font-size: 20px;
+    margin-bottom: 10px;
+  }
+  .category-title {
+    font-size: 16px;
+  }
+  .category-content a {
+    font-size: 15px;
+  }
+
+  /* Hacemos los formularios responsives */
+  .formContainer {
+    width: 90vw;
+    padding: 20px;
+  }
+  
+  /* Ajustamos los botones laterales para que no se superpongan */
+  .side-tab-buttons {
+      transform: scale(0.9);
+      left: -18px;
+      bottom: 20px;
+  }
 }
