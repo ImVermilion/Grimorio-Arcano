@@ -11,23 +11,19 @@
   <div class="book">
     <div class="book-bg-pages"></div>
     <div class="page" id="leftPage">
-      <h2>Índice</h2>
+      <h2 data-i18n="Índice">Índice</h2>
       <ul id="categoryList"></ul>
-      <div class="bottom-buttons">
-        <button onclick="showCategoryForm()">+ Nueva Categoría</button>
-        <button onclick="resetGrimoire()">🗑 Borrar todo</button>
-      </div>
     </div>
     <div class="page" id="rightPage">
-      <h2>Bienvenido</h2>
-      <p>Explora las páginas del grimorio.</p>
+      <h2 data-i18n="Bienvenido">Bienvenido</h2>
+      <p data-i18n="Explora las páginas del grimorio.">Explora las páginas del grimorio.</p>
     </div>
   </div>
 
   <div id="formOverlayCategory" class="hidden">
     <div class="formContainer">
       <h3>Nueva Categoría</h3>
-      <input type="text" id="categoryTitle" placeholder="Nombre de la categoría..." />
+      <input type="text" id="categoryTitle" placeholder="Nombre de la categoría..." data-i18n-placeholder="Nombre de la categoría..." />
       <button onclick="saveCategory()">Guardar</button>
       <button onclick="hideCategoryForm()">Cancelar</button>
     </div>
@@ -36,10 +32,56 @@
   <div id="formOverlayEntry" class="hidden">
     <div class="formContainer">
       <h3>Nueva Entrada</h3>
-      <input type="text" id="entryTitle" placeholder="Título del elemento..." />
+      <input type="text" id="entryTitle" placeholder="Título del elemento..." data-i18n-placeholder="Título del elemento..." />
       <div id="entryPagesContainer"></div>
       <button type="button" onclick="saveEntry()">Guardar</button>
       <button type="button" onclick="hideEntryForm()">Cancelar</button>
+    </div>
+  </div>
+
+  <div class="side-tab-buttons">
+    <button onclick="showCategoryForm()"><span class="tab-icon">📜</span> <span data-i18n="Nueva categoría">Nueva categoría</span></button>
+    <button onclick="resetGrimoire()"><span class="tab-icon">🗑️</span> <span data-i18n="Borrar todo">Borrar todo</span></button>
+  </div>
+
+  <div class="top-bar-buttons">
+    <!-- Botones de color -->
+    <button id="colorBtn" onclick="toggleColorPalette()">
+      <span class="tab-icon">🎨</span> <span data-i18n="Color tapa">Color tapa</span>
+    </button>
+    <div id="colorPalette" class="color-palette hidden">
+      <button class="color-swatch" style="background:#710000;" onclick="setBookColor('#710000')"></button>
+      <button class="color-swatch" style="background:#2a3b6e;" onclick="setBookColor('#2a3b6e')"></button>
+      <button class="color-swatch" style="background:#226e2a;" onclick="setBookColor('#226e2a')"></button>
+      <button class="color-swatch" style="background:#6e2a5b;" onclick="setBookColor('#6e2a5b')"></button>
+      <button class="color-swatch" style="background:#a67c2e;" onclick="setBookColor('#a67c2e')"></button>
+    </div>
+  </div>
+
+  <div class="top-bar-menu">
+    <input type="checkbox" id="menu-toggle" class="menu-toggle" />
+    <label for="menu-toggle" class="menu-icon">&#9776;</label>
+    <div class="menu-dropdown">
+      <!-- Botón de color tapa también aquí para responsive -->
+      <div class="color-menu-hamburguesa">
+        <button id="colorBtnMenu" onclick="toggleColorPaletteMenu()">
+          <span class="tab-icon">🎨</span> <span data-i18n="Color tapa">Color tapa</span>
+        </button>
+        <div id="colorPaletteMenu" class="color-palette hidden">
+          <button class="color-swatch" style="background:#710000;" onclick="setBookColor('#710000')"></button>
+          <button class="color-swatch" style="background:#2a3b6e;" onclick="setBookColor('#2a3b6e')"></button>
+          <button class="color-swatch" style="background:#226e2a;" onclick="setBookColor('#226e2a')"></button>
+          <button class="color-swatch" style="background:#6e2a5b;" onclick="setBookColor('#6e2a5b')"></button>
+          <button class="color-swatch" style="background:#a67c2e;" onclick="setBookColor('#a67c2e')"></button>
+        </div>
+      </div>
+      <div class="cover-images">
+        <!-- tus botones de tapa aquí, si quieres -->
+      </div>
+      <div class="lang-flags-bar">
+        <img src="https://flagcdn.com/24x18/es.png" alt="Español" onclick="setLang('es')" title="Español">
+        <img src="https://flagcdn.com/24x18/gb.png" alt="English" onclick="setLang('en')" title="English">
+      </div>
     </div>
   </div>
 

@@ -87,6 +87,7 @@ function renderCategories() {
     const addEntryLink = document.createElement('a');
     addEntryLink.href = '#';
     addEntryLink.innerText = '➕ Añadir nueva entrada...';
+    addEntryLink.setAttribute('data-i18n', 'Añadir nueva entrada...');
     addEntryLink.classList.add('add-entry-link');
     addEntryLink.style.display = 'none'; // Oculto por defecto
     addEntryLink.onclick = (e) => {
@@ -551,3 +552,100 @@ function createInkBlot(x, y) {
   document.body.appendChild(ink);
   setTimeout(() => ink.remove(), 700);
 }
+
+// Color del libro
+function toggleColorPalette() {
+  document.getElementById('colorPalette').classList.toggle('hidden');
+  // Opcional: cierra la otra paleta si está abierta
+  const menuPalette = document.getElementById('colorPaletteMenu');
+  if (menuPalette && !menuPalette.classList.contains('hidden')) {
+    menuPalette.classList.add('hidden');
+  }
+}
+
+function toggleColorPaletteMenu() {
+  const palette = document.getElementById('colorPaletteMenu');
+  palette.classList.toggle('hidden');
+  // Opcional: cierra la otra paleta si está abierta
+  const mainPalette = document.getElementById('colorPalette');
+  if (mainPalette && !mainPalette.classList.contains('hidden')) {
+    mainPalette.classList.add('hidden');
+  }
+}
+
+function setBookColor(color) {
+  document.querySelector('.book').style.borderColor = color;
+  localStorage.setItem('bookBorderColor', color);
+  // Oculta ambas paletas
+  const palette = document.getElementById('colorPalette');
+  const menuPalette = document.getElementById('colorPaletteMenu');
+  if (palette) palette.classList.add('hidden');
+  if (menuPalette) menuPalette.classList.add('hidden');
+}
+
+// Al cargar, aplica el color guardado si existe
+window.addEventListener('DOMContentLoaded', () => {
+  const color = localStorage.getItem('bookBorderColor');
+  if (color) document.querySelector('.book').style.borderColor = color;
+});
+
+const translations = {
+  es: {
+    'Nueva categoría': 'Nueva categoría',
+    'Borrar todo': 'Borrar todo',
+    'Color tapa': 'Color tapa',
+    'Bienvenido': 'Bienvenido',
+    'Explora las páginas del grimorio.': 'Explora las páginas del grimorio.',
+    'Índice': 'Índice',
+    'Guardar': 'Guardar',
+    'Cancelar': 'Cancelar',
+    'Nueva Entrada': 'Nueva Entrada',
+    'Nombre de la categoría...': 'Nombre de la categoría...',
+    'Título del elemento...': 'Título del elemento...',
+    'Añadir nueva entrada...': 'Añadir nueva entrada...'
+  },
+  en: {
+    'Nueva categoría': 'New category',
+    'Borrar todo': 'Delete all',
+    'Color tapa': 'Cover color',
+    'Bienvenido': 'Welcome',
+    'Explora las páginas del grimorio.': 'Explore the pages of the grimoire.',
+    'Índice': 'Index',
+    'Guardar': 'Save',
+    'Cancelar': 'Cancel',
+    'Nueva Entrada': 'New Entry',
+    'Nombre de la categoría...': 'Category name...',
+    'Título del elemento...': 'Item title...',
+    'Añadir nueva entrada...': 'Add new entry...'
+  }
+};
+
+function setLang(lang) {
+  document.documentElement.lang = lang;
+  localStorage.setItem('grimorioLang', lang);
+
+  // Traduce textos visibles
+  document.querySelectorAll('[data-i18n]').forEach(el => {
+    const key = el.getAttribute('data-i18n');
+    if (translations[lang][key]) el.textContent = translations[lang][key];
+  });
+
+  // Traduce placeholders
+  document.querySelectorAll('[placeholder][data-i18n-placeholder]').forEach(el => {
+    const key = el.getAttribute('data-i18n-placeholder');
+    if (translations[lang][key]) el.placeholder = translations[lang][key];
+  });
+}
+
+window.addEventListener('DOMContentLoaded', () => {
+  const lang = localStorage.getItem('grimorioLang') || 'es';
+  setLang(lang);
+});
+
+// Ejemplo de creación dinámica
+const addBtn = document.createElement('button');
+addBtn.setAttribute('data-i18n', 'Añadir nueva entrada...');
+addBtn.textContent = 'Añadir nueva entrada...'; // Texto por defecto en español
+// Solo para ese botón recién creado
+const lang = localStorage.getItem('grimorioLang') || 'es';
+addBtn.textContent = translations[lang]['Añadir nueva entrada...'];
