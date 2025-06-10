@@ -1,0 +1,20 @@
+{
+  "name": "Grimorio Arcano",
+  "short_name": "Grimorio",
+  "start_url": ".",
+  "display": "standalone",
+  "background_color": "#f4e5c0",
+  "theme_color": "#a68c5e",
+  "icons": [
+    {
+      "src": "MyGrimoire.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "MyGrimoire.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}

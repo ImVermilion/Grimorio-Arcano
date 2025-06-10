@@ -507,6 +507,21 @@ body,
   .top-bar-buttons { display: none !important; }
 }
 
+@media (max-width: 950px) and (orientation: landscape) {
+  .book {
+    width: 80vw;
+    max-width: 700px;
+    height: auto;
+    aspect-ratio: 16 / 9;
+    margin: 30px auto;
+    border-width: 8px;
+    box-shadow: 0 0 30px rgba(0, 0, 0, 0.8);
+    background-size: auto;
+  }
+  body {
+    overflow: auto;
+  }
+}
 
 /* --- ESTILOS PARA BOTONES DE CATEGORÍA MÁS DISCRETOS --- */
 
@@ -578,42 +593,17 @@ body,
 /* --- NUEVOS ESTILOS PARA ADAPTACIÓN A MÓVIL --- */
 
 @media (max-width: 800px), (orientation: portrait) {
-
-  /* Hacemos el libro responsive y mantenemos la proporción 16:9 */
   .book {
     width: 95vw;
+    max-width: 700px;
     height: auto;
     aspect-ratio: 16 / 9;
+    margin: 30px auto;
     border-width: 8px;
     box-shadow: 0 0 30px rgba(0, 0, 0, 0.8);
-    margin-top: 15px; /* Pequeño margen superior */
+    background-size: auto;
   }
-
-  /* Reducimos el tamaño de los títulos y el padding de las páginas */
-  .page {
-    padding: 15px;
-  }
-  .page h2 {
-    font-size: 20px;
-    margin-bottom: 10px;
-  }
-  .category-title {
-    font-size: 16px;
-  }
-  .category-content a {
-    font-size: 15px;
-  }
-
-  /* Hacemos los formularios responsives */
-  .formContainer {
-    width: 90vw;
-    padding: 20px;
-  }
-  
-  /* Ajustamos los botones laterales para que no se superpongan */
-  .side-tab-buttons {
-      transform: scale(0.9);
-      left: -18px;
-      bottom: 20px;
+  body {
+    overflow: auto;
   }
 }
