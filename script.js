@@ -5,6 +5,78 @@ let editing = false;
 let currentCategoryIndex = null;
 let currentEntryIndex = null;
 
+// --- DICCIONARIO DE TRADUCCIONES AMPLIADO ---
+const translations = {
+  es: {
+    'Nueva categoría': 'Nueva categoría',
+    'Borrar todo': 'Borrar todo',
+    'Color tapa': 'Color tapa',
+    'Bienvenido': 'Bienvenido',
+    'Explora las páginas del grimorio.': 'Explora las páginas del grimorio.',
+    'Índice': 'Índice',
+    'Guardar': 'Guardar',
+    'Cancelar': 'Cancelar',
+    'Nueva Entrada': 'Nueva Entrada',
+    'Nombre de la categoría...': 'Nombre de la categoría...',
+    'Título del elemento...': 'Título del elemento...',
+    'Añadir nueva entrada...': 'Añadir nueva entrada...',
+    'Mostrar más...': 'Mostrar más...',
+    'Añadir nueva entrada': 'Añadir nueva entrada',
+    'Eliminar categoría': 'Eliminar categoría',
+    'Editar nombre de categoría': 'Editar nombre de categoría',
+    '¿Seguro que quieres eliminar esta categoría y todas sus entradas?': '¿Seguro que quieres eliminar esta categoría y todas sus entradas?',
+    '¿Seguro que quieres eliminar esta entrada?': '¿Seguro que quieres eliminar esta entrada?',
+    'El título no puede estar vacío.': 'El título no puede estar vacío.',
+    'Página': 'Página',
+    'Editar esta entrada': 'Editar esta entrada',
+    'Eliminar página': 'Eliminar página',
+    'Añadir página': 'Añadir página',
+    'Texto de la página': 'Texto de la página',
+    'Imagen:': 'Imagen:',
+    'Arriba': 'Arriba',
+    'Abajo': 'Abajo'
+  },
+  en: {
+    'Nueva categoría': 'New category',
+    'Borrar todo': 'Delete all',
+    'Color tapa': 'Cover color',
+    'Bienvenido': 'Welcome',
+    'Explora las páginas del grimorio.': 'Explore the pages of the grimoire.',
+    'Índice': 'Index',
+    'Guardar': 'Save',
+    'Cancelar': 'Cancel',
+    'Nueva Entrada': 'New Entry',
+    'Nombre de la categoría...': 'Category name...',
+    'Título del elemento...': 'Item title...',
+    'Añadir nueva entrada...': 'Add new entry...',
+    'Mostrar más...': 'Show more...',
+    'Añadir nueva entrada': 'Add new entry',
+    'Eliminar categoría': 'Delete category',
+    'Editar nombre de categoría': 'Edit category name',
+    '¿Seguro que quieres eliminar esta categoría y todas sus entradas?': 'Are you sure you want to delete this category and all its entries?',
+    '¿Seguro que quieres eliminar esta entrada?': 'Are you sure you want to delete this entry?',
+    'El título no puede estar vacío.': 'The title cannot be empty.',
+    'Página': 'Page',
+    'Editar esta entrada': 'Edit this entry',
+    'Eliminar página': 'Delete page',
+    'Añadir página': 'Add page',
+    'Texto de la página': 'Page text',
+    'Imagen:': 'Image:',
+    'Arriba': 'Top',
+    'Abajo': 'Bottom'
+  }
+};
+
+/**
+ * Función auxiliar para obtener la traducción de una clave.
+ * @param {string} key - La clave a traducir.
+ * @returns {string} - El texto traducido.
+ */
+function t(key) {
+  const lang = localStorage.getItem('grimorioLang') || 'es';
+  return translations[lang][key] || key;
+}
+
 function saveGrimoire() {
   localStorage.setItem('grimoire', JSON.stringify(grimoire));
 }
@@ -22,28 +94,36 @@ function renderCategories() {
 
     const titleSpan = document.createElement('span');
     titleSpan.textContent = `${index + 1}. ${category.title}`;
+    titleSpan.className = 'category-title-text';
 
-    // Botón añadir
+    const editBtn = document.createElement('span');
+    editBtn.className = 'category-edit';
+    editBtn.innerHTML = '✏️';
+    editBtn.title = t('Editar nombre de categoría');
+    editBtn.onclick = (e) => {
+        e.stopPropagation();
+        editCategoryName(index, titleRow);
+    };
+
     const addBtn = document.createElement('span');
     addBtn.className = 'category-add';
     addBtn.innerHTML = '+';
-    addBtn.title = 'Añadir nueva entrada';
+    addBtn.title = t('Añadir nueva entrada');
     addBtn.onclick = (e) => {
       e.stopPropagation();
       selectedCategoryIndex = index;
       showEntryForm();
     };
 
-    // Botón eliminar
     const removeBtn = document.createElement('span');
     removeBtn.className = 'category-remove';
     removeBtn.innerHTML = '–';
-    removeBtn.title = 'Eliminar categoría';
+    removeBtn.title = t('Eliminar categoría');
     removeBtn.onclick = (e) => removeCategory(index, e);
 
-    // Contenedor para los botones a la derecha
     const btnGroup = document.createElement('span');
     btnGroup.className = 'category-btn-group';
+    btnGroup.appendChild(editBtn);
     btnGroup.appendChild(addBtn);
     btnGroup.appendChild(removeBtn);
 
@@ -70,7 +150,7 @@ function renderCategories() {
     if (category.entries.length > visibleCount) {
       const showMore = document.createElement('a');
       showMore.href = '#';
-      showMore.innerText = 'Mostrar más...';
+      showMore.innerText = t('Mostrar más...');
       showMore.className = 'show-more';
       showMore.onclick = (e) => {
         e.preventDefault();
@@ -83,13 +163,12 @@ function renderCategories() {
       contentDiv.appendChild(wrapper);
     }
 
-    // SOLO se crea el enlace dentro del contenido y se oculta por defecto
     const addEntryLink = document.createElement('a');
     addEntryLink.href = '#';
-    addEntryLink.innerText = '➕ Añadir nueva entrada...';
+    addEntryLink.innerText = `➕ ${t('Añadir nueva entrada...')}`;
     addEntryLink.setAttribute('data-i18n', 'Añadir nueva entrada...');
     addEntryLink.classList.add('add-entry-link');
-    addEntryLink.style.display = 'none'; // Oculto por defecto
+    addEntryLink.style.display = 'none';
     addEntryLink.onclick = (e) => {
       e.preventDefault();
       e.stopPropagation();
@@ -103,6 +182,42 @@ function renderCategories() {
     categoryList.appendChild(categoryBlock);
   });
 }
+
+function editCategoryName(index, titleRow) {
+    const titleSpan = titleRow.querySelector('.category-title-text');
+    const btnGroup = titleRow.querySelector('.category-btn-group');
+    const currentTitle = grimoire[index].title;
+
+    btnGroup.style.display = 'none';
+
+    const input = document.createElement('input');
+    input.type = 'text';
+    input.value = currentTitle;
+    input.className = 'category-title-input';
+    input.onclick = (e) => e.stopPropagation();
+
+    const save = () => {
+        const newTitle = input.value.trim();
+        if (newTitle && newTitle !== currentTitle) {
+            grimoire[index].title = newTitle;
+            saveGrimoire();
+        }
+        renderCategories();
+    };
+
+    input.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter') {
+            save();
+        } else if (e.key === 'Escape') {
+            renderCategories();
+        }
+    });
+
+    input.addEventListener('blur', save);
+    titleSpan.replaceWith(input);
+    input.focus();
+}
+
 
 function createEntryItem(entry, categoryIndex, entryIndex) {
   const entryLink = document.createElement('a');
@@ -132,7 +247,6 @@ function expandCategory(index) {
   if (showMore) showMore.style.display = 'none';
   content.dataset.expanded = 'true';
 
-  // Mostrar el enlace de añadir entrada solo cuando está expandido
   const addEntryLink = content.querySelector('.add-entry-link');
   if (addEntryLink) addEntryLink.style.display = '';
 }
@@ -148,13 +262,11 @@ function toggleCategory(index) {
     hidden.forEach(e => e.style.display = 'none');
     if (showMore) showMore.style.display = 'block';
     content.dataset.expanded = 'false';
-    // Ocultar el enlace al plegar
     if (addEntryLink) addEntryLink.style.display = 'none';
   } else {
     hidden.forEach(e => e.style.display = 'block');
     if (showMore) showMore.style.display = 'none';
     content.dataset.expanded = 'true';
-    // Mostrar el enlace al desplegar
     if (addEntryLink) addEntryLink.style.display = '';
   }
 }
@@ -162,15 +274,10 @@ function toggleCategory(index) {
 function showCategoryForm() {
   const overlay = document.getElementById('formOverlayCategory');
   overlay.classList.remove('hidden');
-  overlay.classList.add('overlay-visible');
-  document.getElementById('formOverlayCategory').classList.remove('hidden');
   document.getElementById('categoryTitle').value = '';
 }
 
 function hideCategoryForm() {
-  const overlay = document.getElementById('formOverlayCategory');
-  overlay.classList.add('hidden');
-  overlay.classList.remove('overlay-visible');
   document.getElementById('formOverlayCategory').classList.add('hidden');
 }
 
@@ -185,7 +292,7 @@ function saveCategory() {
 
 function removeCategory(index, event) {
   event.stopPropagation();
-  if (!confirm('¿Seguro que quieres eliminar esta categoría y todas sus entradas?')) return;
+  if (!confirm(t('¿Seguro que quieres eliminar esta categoría y todas sus entradas?'))) return;
   grimoire.splice(index, 1);
   saveGrimoire();
   renderCategories();
@@ -193,12 +300,10 @@ function removeCategory(index, event) {
 
 function showEntryForm(editingPages = null) {
   document.getElementById('formOverlayEntry').classList.remove('hidden');
-  // Si es edición, carga las páginas existentes
   if (editingPages) {
     window.editingPages = JSON.parse(JSON.stringify(editingPages));
   } else {
     window.editingPages = [{ text: '', image: null, imagePosition: 'top' }];
-    // Si es nueva entrada, asegúrate de que editing sea false y los índices de edición sean null
     editing = false;
     currentCategoryIndex = null;
     currentEntryIndex = null;
@@ -213,15 +318,13 @@ function renderPageEditors() {
     const pageDiv = document.createElement('div');
     pageDiv.className = 'entry-page-editor';
 
-    // Selector de posición de imagen
     const posLabel = document.createElement('label');
-    posLabel.innerText = 'Imagen: ';
+    posLabel.innerText = t('Imagen:');
     const posSelect = document.createElement('select');
-    posSelect.innerHTML = `<option value="top">Arriba</option><option value="bottom">Abajo</option>`;
+    posSelect.innerHTML = `<option value="top">${t('Arriba')}</option><option value="bottom">${t('Abajo')}</option>`;
     posSelect.value = page.imagePosition || 'top';
     posSelect.onchange = e => { page.imagePosition = e.target.value; };
 
-    // Imagen
     const imgInput = document.createElement('input');
     imgInput.type = 'file';
     imgInput.accept = 'image/*';
@@ -234,15 +337,13 @@ function renderPageEditors() {
       }
     };
 
-    // Texto
     const textarea = document.createElement('textarea');
     textarea.value = page.text;
-    textarea.placeholder = `Texto de la página ${i + 1}`;
+    textarea.placeholder = `${t('Texto de la página')} ${i + 1}`;
     textarea.oninput = e => { page.text = e.target.value; };
 
-    // Botón eliminar página
     const delBtn = document.createElement('button');
-    delBtn.innerText = 'Eliminar página';
+    delBtn.innerText = t('Eliminar página');
     delBtn.onclick = () => {
       window.editingPages.splice(i, 1);
       renderPageEditors();
@@ -264,9 +365,8 @@ function renderPageEditors() {
     container.appendChild(pageDiv);
   });
 
-  // Botón añadir página
   const addBtn = document.createElement('button');
-  addBtn.innerText = 'Añadir página';
+  addBtn.innerText = t('Añadir página');
   addBtn.onclick = () => {
     window.editingPages.push({ text: '', image: null, imagePosition: 'top' });
     renderPageEditors();
@@ -274,27 +374,21 @@ function renderPageEditors() {
   container.appendChild(addBtn);
 }
 
-// Cambia tu formulario HTML para incluir <div id="entryPagesContainer"></div>
-// y elimina los campos antiguos de texto e imagen únicos
-
 function saveEntry() {
   const title = document.getElementById('entryTitle').value.trim();
   const pages = window.editingPages;
 
   if (!title) {
-    alert('El título no puede estar vacío.');
+    alert(t('El título no puede estar vacío.'));
     return;
   }
 
   if (editing && currentCategoryIndex !== null && currentEntryIndex !== null) {
-    // Editar entrada existente
     const entry = grimoire[currentCategoryIndex].entries[currentEntryIndex];
     entry.title = title;
     entry.pages = pages;
   } else {
-    // Nueva entrada
     grimoire[selectedCategoryIndex].entries.push({ title, pages });
-    // Actualiza los índices para mostrar la nueva entrada
     currentCategoryIndex = selectedCategoryIndex;
     currentEntryIndex = grimoire[selectedCategoryIndex].entries.length - 1;
   }
@@ -308,12 +402,12 @@ function saveEntry() {
 }
 
 function removeEntry(categoryIndex, entryIndex) {
-  if (!confirm('¿Seguro que quieres eliminar esta entrada?')) return;
+  if (!confirm(t('¿Seguro que quieres eliminar esta entrada?'))) return;
   grimoire[categoryIndex].entries.splice(entryIndex, 1);
   saveGrimoire();
   renderCategories();
   const rightPage = document.getElementById('rightPage');
-  rightPage.innerHTML = '<h2>Bienvenido</h2><p>Explora las páginas del grimorio.</p>';
+  rightPage.innerHTML = `<h2 data-i18n="Bienvenido">${t('Bienvenido')}</h2><p data-i18n="Explora las páginas del grimorio.">${t('Explora las páginas del grimorio.')}</p>`;
 }
 
 function showEntryContent(categoryIndex, entryIndex) {
@@ -323,8 +417,6 @@ function showEntryContent(categoryIndex, entryIndex) {
 
   const rightPage = document.getElementById('rightPage');
   rightPage.innerHTML = `<h2>${entry.title}</h2>`;
-
-  let currentPage = 0;
 
   const container = document.createElement('div');
   container.className = 'paged-content';
@@ -337,7 +429,7 @@ function showEntryContent(categoryIndex, entryIndex) {
   const editBtn = document.createElement('button');
   editBtn.innerHTML = '✏️';
   editBtn.className = 'edit-icon-button';
-  editBtn.title = 'Editar esta entrada';
+  editBtn.title = t('Editar esta entrada');
   editBtn.onclick = editCurrentEntry;
 
   function renderPage(index) {
@@ -354,7 +446,6 @@ function showEntryContent(categoryIndex, entryIndex) {
     }
     container.innerHTML = `<div class="page-content-block">${contenido}</div>`;
 
-    // Muestra SIEMPRE el botón de editar debajo del contenido
     if (!editBtn.parentElement) rightPage.appendChild(editBtn);
 
     navigation.innerHTML = '';
@@ -366,7 +457,7 @@ function showEntryContent(categoryIndex, entryIndex) {
     }
 
     const label = document.createElement('span');
-    label.textContent = `Página ${index + 1} / ${entry.pages.length}`;
+    label.textContent = `${t('Página')} ${index + 1} / ${entry.pages.length}`;
     navigation.appendChild(label);
 
     if (index < entry.pages.length - 1) {
@@ -377,75 +468,84 @@ function showEntryContent(categoryIndex, entryIndex) {
     }
   }
 
-  renderPage(currentPage);
+  renderPage(0);
 }
 
 function editCurrentEntry() {
   if (currentCategoryIndex === null || currentEntryIndex === null) return;
   const entry = grimoire[currentCategoryIndex].entries[currentEntryIndex];
   document.getElementById('entryTitle').value = entry.title;
-  editing = true; // Pon esto ANTES de llamar a showEntryForm
+  editing = true;
   showEntryForm(entry.pages);
 }
 
 function resetGrimoire() {
-  if (confirm('¿Seguro que quieres borrar todo el grimorio?')) {
+  if (confirm(t('¿Seguro que quieres borrar todo el grimorio?'))) {
     localStorage.removeItem('grimoire');
     grimoire = [];
     renderCategories();
     const rightPage = document.getElementById('rightPage');
-    rightPage.innerHTML = '<h2>Bienvenido</h2><p>Explora las páginas del grimorio.</p>';
+    rightPage.innerHTML = `<h2 data-i18n="Bienvenido">${t('Bienvenido')}</h2><p data-i18n="Explora las páginas del grimorio.">${t('Explora las páginas del grimorio.')}</p>`;
   }
 }
-
-function paginateText(text, containerHeight, lineHeight = 20, fontSize = 16) {
-  const tempDiv = document.createElement('div');
-  tempDiv.style.position = 'absolute';
-  tempDiv.style.visibility = 'hidden';
-  tempDiv.style.width = '30%';
-  tempDiv.style.lineHeight = lineHeight + 'px';
-  tempDiv.style.fontSize = fontSize + 'px';
-  tempDiv.style.whiteSpace = 'normal';
-  tempDiv.style.padding = '10px';
-  tempDiv.style.fontFamily = 'MedievalSharp, cursive';
-  tempDiv.style.textAlign = 'justify';
-  document.body.appendChild(tempDiv);
-
-  const lines = text.split('\n');
-  let currentPage = '';
-  const pages = [];
-
-  for (let i = 0; i < lines.length; i++) {
-    const testPage = currentPage + lines[i] + '\n';
-    tempDiv.innerText = testPage;
-
-    if (tempDiv.scrollHeight > containerHeight) {
-      pages.push(currentPage.trim());
-      currentPage = lines[i] + '\n';
-    } else {
-      currentPage = testPage;
-    }
-  }
-
-  if (currentPage.trim() !== '') {
-    pages.push(currentPage.trim());
-  }
-
-  document.body.removeChild(tempDiv);
-  return pages;
-}
-renderCategories();
 
 function hideEntryForm() {
   const overlay = document.getElementById('formOverlayEntry');
   if (overlay) {
     overlay.classList.add('hidden');
-    // NO pongas overlay.style.display = 'none';
-    console.log('Formulario de entrada ocultado');
   }
 }
 
-// --- TRAZO CONTINUO DE TINTA CON CANVAS ---
+function toggleColorPalette() {
+  document.getElementById('colorPalette').classList.toggle('hidden');
+  const menuPalette = document.getElementById('colorPaletteMenu');
+  if (menuPalette && !menuPalette.classList.contains('hidden')) {
+    menuPalette.classList.add('hidden');
+  }
+}
+
+function toggleColorPaletteMenu() {
+  document.getElementById('colorPaletteMenu').classList.toggle('hidden');
+  const mainPalette = document.getElementById('colorPalette');
+  if (mainPalette && !mainPalette.classList.contains('hidden')) {
+    mainPalette.classList.add('hidden');
+  }
+}
+
+function setBookColor(color) {
+  document.querySelector('.book').style.borderColor = color;
+  localStorage.setItem('bookBorderColor', color);
+  const palette = document.getElementById('colorPalette');
+  const menuPalette = document.getElementById('colorPaletteMenu');
+  if (palette) palette.classList.add('hidden');
+  if (menuPalette) menuPalette.classList.add('hidden');
+}
+
+function setLang(lang) {
+  document.documentElement.lang = lang;
+  localStorage.setItem('grimorioLang', lang);
+
+  document.querySelectorAll('[data-i18n]').forEach(el => {
+    const key = el.getAttribute('data-i18n');
+    if (translations[lang][key]) el.textContent = translations[lang][key];
+  });
+
+  document.querySelectorAll('[placeholder][data-i18n-placeholder]').forEach(el => {
+    const key = el.getAttribute('data-i18n-placeholder');
+    if (translations[lang][key]) el.placeholder = translations[lang][key];
+  });
+
+  renderCategories();
+  if (currentCategoryIndex !== null && currentEntryIndex !== null) {
+      showEntryContent(currentCategoryIndex, currentEntryIndex);
+  } else {
+      const rightPage = document.getElementById('rightPage');
+      rightPage.innerHTML = `<h2 data-i18n="Bienvenido">${t('Bienvenido')}</h2><p data-i18n="Explora las páginas del grimorio.">${t('Explora las páginas del grimorio.')}</p>`;
+  }
+}
+
+// --- EFECTOS DE TINTA (REINTEGRADOS) ---
+
 const inkCanvas = document.createElement('canvas');
 inkCanvas.id = 'inkCanvas';
 inkCanvas.style.position = 'fixed';
@@ -474,7 +574,6 @@ document.addEventListener('mousedown', function(e) {
 
 document.addEventListener('mouseup', function() {
   drawing = false;
-  // Borra la línea tras un segundo
   setTimeout(() => {
     const ctx = inkCanvas.getContext('2d');
     ctx.clearRect(0, 0, inkCanvas.width, inkCanvas.height);
@@ -484,7 +583,6 @@ document.addEventListener('mouseup', function() {
 document.addEventListener('mousemove', function(e) {
   if (!drawing) return;
 
-  // Limitar el trazo al área del libro
   const book = document.querySelector('.book');
   const rect = book.getBoundingClientRect();
   const x = e.clientX;
@@ -493,7 +591,7 @@ document.addEventListener('mousemove', function(e) {
     x < rect.left || x > rect.right ||
     y < rect.top || y > rect.bottom
   ) {
-    return; // No dibujar fuera del libro
+    return;
   }
 
   const ctx = inkCanvas.getContext('2d');
@@ -513,7 +611,6 @@ document.addEventListener('mousemove', function(e) {
     const x2 = lastX + ((dx * i) / steps);
     const y2 = lastY + ((dy * i) / steps);
 
-    // Solo dibuja si ambos puntos están dentro del libro
     if (
       x1 >= rect.left && x1 <= rect.right &&
       y1 >= rect.top && y1 <= rect.bottom &&
@@ -531,9 +628,7 @@ document.addEventListener('mousemove', function(e) {
   lastY = y;
 });
 
-// Evita que la gota salga al soltar el trazo (mouseup)
 document.addEventListener('click', function(e) {
-  // Evita la mancha al soltar el trazo
   if (drawing) return;
   createInkBlot(e.clientX, e.clientY);
 });
@@ -541,7 +636,6 @@ document.addEventListener('click', function(e) {
 function createInkBlot(x, y) {
   const ink = document.createElement('span');
   ink.className = 'ink-blot';
-  // Tamaño y forma aleatoria
   const w = 10 + Math.random() * 10;
   const h = 8 + Math.random() * 12;
   ink.style.width = w + 'px';
@@ -553,99 +647,11 @@ function createInkBlot(x, y) {
   setTimeout(() => ink.remove(), 700);
 }
 
-// Color del libro
-function toggleColorPalette() {
-  document.getElementById('colorPalette').classList.toggle('hidden');
-  // Opcional: cierra la otra paleta si está abierta
-  const menuPalette = document.getElementById('colorPaletteMenu');
-  if (menuPalette && !menuPalette.classList.contains('hidden')) {
-    menuPalette.classList.add('hidden');
-  }
-}
-
-function toggleColorPaletteMenu() {
-  const palette = document.getElementById('colorPaletteMenu');
-  palette.classList.toggle('hidden');
-  // Opcional: cierra la otra paleta si está abierta
-  const mainPalette = document.getElementById('colorPalette');
-  if (mainPalette && !mainPalette.classList.contains('hidden')) {
-    mainPalette.classList.add('hidden');
-  }
-}
-
-function setBookColor(color) {
-  document.querySelector('.book').style.borderColor = color;
-  localStorage.setItem('bookBorderColor', color);
-  // Oculta ambas paletas
-  const palette = document.getElementById('colorPalette');
-  const menuPalette = document.getElementById('colorPaletteMenu');
-  if (palette) palette.classList.add('hidden');
-  if (menuPalette) menuPalette.classList.add('hidden');
-}
-
-// Al cargar, aplica el color guardado si existe
+// --- Carga inicial al final ---
 window.addEventListener('DOMContentLoaded', () => {
   const color = localStorage.getItem('bookBorderColor');
   if (color) document.querySelector('.book').style.borderColor = color;
-});
-
-const translations = {
-  es: {
-    'Nueva categoría': 'Nueva categoría',
-    'Borrar todo': 'Borrar todo',
-    'Color tapa': 'Color tapa',
-    'Bienvenido': 'Bienvenido',
-    'Explora las páginas del grimorio.': 'Explora las páginas del grimorio.',
-    'Índice': 'Índice',
-    'Guardar': 'Guardar',
-    'Cancelar': 'Cancelar',
-    'Nueva Entrada': 'Nueva Entrada',
-    'Nombre de la categoría...': 'Nombre de la categoría...',
-    'Título del elemento...': 'Título del elemento...',
-    'Añadir nueva entrada...': 'Añadir nueva entrada...'
-  },
-  en: {
-    'Nueva categoría': 'New category',
-    'Borrar todo': 'Delete all',
-    'Color tapa': 'Cover color',
-    'Bienvenido': 'Welcome',
-    'Explora las páginas del grimorio.': 'Explore the pages of the grimoire.',
-    'Índice': 'Index',
-    'Guardar': 'Save',
-    'Cancelar': 'Cancel',
-    'Nueva Entrada': 'New Entry',
-    'Nombre de la categoría...': 'Category name...',
-    'Título del elemento...': 'Item title...',
-    'Añadir nueva entrada...': 'Add new entry...'
-  }
-};
-
-function setLang(lang) {
-  document.documentElement.lang = lang;
-  localStorage.setItem('grimorioLang', lang);
-
-  // Traduce textos visibles
-  document.querySelectorAll('[data-i18n]').forEach(el => {
-    const key = el.getAttribute('data-i18n');
-    if (translations[lang][key]) el.textContent = translations[lang][key];
-  });
-
-  // Traduce placeholders
-  document.querySelectorAll('[placeholder][data-i18n-placeholder]').forEach(el => {
-    const key = el.getAttribute('data-i18n-placeholder');
-    if (translations[lang][key]) el.placeholder = translations[lang][key];
-  });
-}
-
-window.addEventListener('DOMContentLoaded', () => {
+  
   const lang = localStorage.getItem('grimorioLang') || 'es';
   setLang(lang);
 });
-
-// Ejemplo de creación dinámica
-const addBtn = document.createElement('button');
-addBtn.setAttribute('data-i18n', 'Añadir nueva entrada...');
-addBtn.textContent = 'Añadir nueva entrada...'; // Texto por defecto en español
-// Solo para ese botón recién creado
-const lang = localStorage.getItem('grimorioLang') || 'es';
-addBtn.textContent = translations[lang]['Añadir nueva entrada...'];

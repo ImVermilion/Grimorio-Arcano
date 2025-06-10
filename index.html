@@ -20,22 +20,24 @@
     </div>
   </div>
 
+  <!-- Formulario de categoría -->
   <div id="formOverlayCategory" class="hidden">
     <div class="formContainer">
-      <h3>Nueva Categoría</h3>
+      <h3 data-i18n="Nueva Categoría">Nueva Categoría</h3>
       <input type="text" id="categoryTitle" placeholder="Nombre de la categoría..." data-i18n-placeholder="Nombre de la categoría..." />
-      <button onclick="saveCategory()">Guardar</button>
-      <button onclick="hideCategoryForm()">Cancelar</button>
+      <button onclick="saveCategory()" data-i18n="Guardar">Guardar</button>
+      <button onclick="hideCategoryForm()" data-i18n="Cancelar">Cancelar</button>
     </div>
   </div>
 
+  <!-- Formulario de entrada -->
   <div id="formOverlayEntry" class="hidden">
     <div class="formContainer">
-      <h3>Nueva Entrada</h3>
+      <h3 data-i18n="Nueva Entrada">Nueva Entrada</h3>
       <input type="text" id="entryTitle" placeholder="Título del elemento..." data-i18n-placeholder="Título del elemento..." />
       <div id="entryPagesContainer"></div>
-      <button type="button" onclick="saveEntry()">Guardar</button>
-      <button type="button" onclick="hideEntryForm()">Cancelar</button>
+      <button type="button" onclick="saveEntry()" data-i18n="Guardar">Guardar</button>
+      <button type="button" onclick="hideEntryForm()" data-i18n="Cancelar">Cancelar</button>
     </div>
   </div>
 

@@ -223,50 +223,7 @@ input, textarea {
   cursor: pointer;
 }
 
-.category-btn-group {
-  display: flex;
-  gap: 6px;
-  align-items: center;
-}
 
-.category-add,
-.category-remove {
-  display: inline-block;
-  font-size: 18px;
-  width: 24px;
-  height: 24px;
-  line-height: 24px;
-  text-align: center;
-  border-radius: 50%;
-  border: 1px solid #a68c5e;
-  background: #e3d3aa;
-  color: #3a1f0f;
-  cursor: pointer;
-  transition: background 0.2s, color 0.2s, transform 0.2s, box-shadow 0.2s;
-  margin-left: 0;
-  margin-right: 0;
-  box-shadow: 0 1px 4px rgba(60,40,10,0.04);
-  user-select: none;
-}
-
-.category-add:hover,
-.category-remove:hover {
-  background: #f4e5c0;
-  color: #7a4b13;
-  transform: scale(1.12);
-  box-shadow: 0 2px 8px #e3d3aa;
-}
-
-.category-remove {
-  color: #a33;
-  border-color: #a33;
-  background: #f7e0e0;
-}
-.category-remove:hover {
-  background: #f4bcbc;
-  color: #fff;
-  border-color: #a33;
-}
 #rightPage button.edit-button {
   margin-top: 20px;
   padding: 6px 12px;
@@ -301,40 +258,7 @@ input, textarea {
   transform: scale(1.04);
 }
 
-/* Botón pequeño para añadir entrada */
 
-.small-add-button {
-  font-family: 'MedievalSharp', cursive;
-  font-size: 11px;
-  padding: 2px 6px;
-  background: transparent;
-  color: #3a1f0f;
-  border: 1px dashed #a68c5e;
-  border-radius: 3px;
-  margin-top: 4px;
-  cursor: pointer;
-  opacity: 0.6;
-  transition: all 0.2s ease;
-}
-
-.small-add-button:hover {
-  background: rgba(255, 255, 255, 0.1);
-  opacity: 1;
-  transform: scale(1.01);
-}
-
-.small-add-button:hover {
-  background: #e8dbb4;
-  transform: scale(1.02);
-  opacity: 1;
-}
-
-
-.small-add-button:hover {
-  background: #e3d3aa;
-  transform: scale(1.03);
-  opacity: 1;
-}
 
 /* Botones inferiores discretos */
 .bottom-buttons {
@@ -825,3 +749,73 @@ body,
   }
 }
 
+/* --- ESTILOS PARA BOTONES DE CATEGORÍA MÁS DISCRETOS --- */
+
+/* 1. Ocultamos el grupo de botones por defecto */
+.category-btn-group {
+  display: flex;
+  gap: 4px; /* Aumentamos un poco el espacio entre botones */
+  align-items: right;
+  opacity: 0; /* Lo hacemos invisible */
+  transition: opacity 0.2s ease-in-out; /* Animación suave para aparecer */
+}
+
+/* 2. Hacemos que el grupo de botones aparezca al pasar el ratón por la fila */
+.category-block:hover .category-btn-group {
+  opacity: 1; /* Lo hacemos visible al pasar el ratón */
+}
+
+/* 3. Estilo base para TODOS los botones (sin fondos ni bordes) */
+.category-add,
+.category-remove,
+.category-edit {
+  display: flex;
+  font-size: 12px; /* Tamaño del icono */
+  padding: 1px 1px; /* Un poco de espacio para que sea fácil hacer clic */
+  border-radius: 4px;
+  cursor: pointer;
+  background: none; /* SIN fondo */
+  border: none; /* SIN borde */
+  color: #a68c5ec3; /* Un color discreto por defecto */
+  transition: transform 0.2s, color 0.2s;
+  /* Eliminamos las propiedades de círculo (width, height, line-height, etc.) */
+}
+
+/* 4. Efectos hover para cada botón individual */
+.category-edit:hover {
+  color: #3f7a13; /* Verde para editar */
+  transform: scale(1.2);
+}
+
+.category-add:hover {
+  color: #7a4b13; /* Marrón más intenso para añadir */
+  transform: scale(1.2);
+}
+
+.category-remove:hover {
+  color: #a33; /* Rojo para eliminar */
+  transform: scale(1.2);
+}
+
+/* --- ESTILOS PARA EDICIÓN DE CATEGORÍA --- */
+
+.category-title-text {
+  flex-grow: 1;
+}
+
+.category-title-input {
+  font-family: 'MedievalSharp', cursive;
+  font-size: 20px;
+  color: #3a1f0f;
+  background-color: #f4e5c0;
+  border: none;
+  border-bottom: 1px dashed #a68c5e;
+  flex-grow: 1;
+  outline: none;
+  padding: 0;
+  margin-right: 10px;
+  user-select: text;
+  -webkit-user-select: text;
+  -moz-user-select: text;
+  -ms-user-select: text;
+}
