@@ -32,6 +32,7 @@ body {
   padding: 30px;
   box-sizing: border-box;
   background: #f4e5c0 url('https://www.transparenttextures.com/patterns/paper-fibers.png');
+  background-repeat: repeat;
   background-size: auto;
   box-shadow: inset 0 0 15px rgba(0,0,0,0.3);
   transition: transform 1s ease-in-out;
@@ -575,44 +576,6 @@ body,
   100% {
     opacity: 0;
     transform: scale(1.3);
-  }
-}
-
-@media (max-width: 700px) {
-  .book {
-    width: 100vw;
-    height: auto;
-    min-width: 0;
-    min-height: 0;
-    border-radius: 0;
-    border-width: 6px;
-    box-shadow: none;
-  }
-  .page {
-    width: 100vw;
-    min-width: 0;
-    min-height: 0;
-    box-shadow: none;
-    border-radius: 0;
-    padding-left: 0;
-    padding-right: 0;
-  }
-  .category-block {
-    width: 98vw;
-    margin-left: 0;
-  }
-  .paged-content {
-    max-width: 98vw;
-    padding-left: 0;
-    padding-right: 0;
-  }
-  .entry-image {
-    max-width: 96vw;
-  }
-  .formContainer {
-    width: 98vw;
-    min-width: 0;
-    max-width: 420px;
   }
 }
 
