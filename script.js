@@ -443,3 +443,111 @@ function hideEntryForm() {
     console.log('Formulario de entrada ocultado');
   }
 }
+
+// --- TRAZO CONTINUO DE TINTA CON CANVAS ---
+const inkCanvas = document.createElement('canvas');
+inkCanvas.id = 'inkCanvas';
+inkCanvas.style.position = 'fixed';
+inkCanvas.style.left = '0';
+inkCanvas.style.top = '0';
+inkCanvas.style.pointerEvents = 'none';
+inkCanvas.style.zIndex = '9998';
+document.body.appendChild(inkCanvas);
+
+function resizeInkCanvas() {
+  inkCanvas.width = window.innerWidth;
+  inkCanvas.height = window.innerHeight;
+}
+resizeInkCanvas();
+window.addEventListener('resize', resizeInkCanvas);
+
+let drawing = false;
+let lastX = 0;
+let lastY = 0;
+
+document.addEventListener('mousedown', function(e) {
+  drawing = true;
+  lastX = e.clientX;
+  lastY = e.clientY;
+});
+
+document.addEventListener('mouseup', function() {
+  drawing = false;
+  // Borra la línea tras un segundo
+  setTimeout(() => {
+    const ctx = inkCanvas.getContext('2d');
+    ctx.clearRect(0, 0, inkCanvas.width, inkCanvas.height);
+  }, 1000);
+});
+
+document.addEventListener('mousemove', function(e) {
+  if (!drawing) return;
+
+  // Limitar el trazo al área del libro
+  const book = document.querySelector('.book');
+  const rect = book.getBoundingClientRect();
+  const x = e.clientX;
+  const y = e.clientY;
+  if (
+    x < rect.left || x > rect.right ||
+    y < rect.top || y > rect.bottom
+  ) {
+    return; // No dibujar fuera del libro
+  }
+
+  const ctx = inkCanvas.getContext('2d');
+  ctx.strokeStyle = '#2d0a0a';
+  ctx.globalAlpha = 0.5;
+  ctx.lineWidth = 3;
+  ctx.lineCap = 'round';
+
+  const dx = x - lastX;
+  const dy = y - lastY;
+  const distance = Math.sqrt(dx * dx + dy * dy);
+  const steps = Math.max(1, Math.floor(distance / 2));
+
+  for (let i = 1; i <= steps; i++) {
+    const x1 = lastX + ((dx * (i - 1)) / steps);
+    const y1 = lastY + ((dy * (i - 1)) / steps);
+    const x2 = lastX + ((dx * i) / steps);
+    const y2 = lastY + ((dy * i) / steps);
+
+    // Solo dibuja si ambos puntos están dentro del libro
+    if (
+      x1 >= rect.left && x1 <= rect.right &&
+      y1 >= rect.top && y1 <= rect.bottom &&
+      x2 >= rect.left && x2 <= rect.right &&
+      y2 >= rect.top && y2 <= rect.bottom
+    ) {
+      ctx.beginPath();
+      ctx.moveTo(x1, y1);
+      ctx.lineTo(x2, y2);
+      ctx.stroke();
+    }
+  }
+
+  lastX = x;
+  lastY = y;
+});
+
+// Evita que la gota salga al soltar el trazo (mouseup)
+document.addEventListener('click', function(e) {
+  // Evita la mancha al soltar el trazo
+  if (drawing) return;
+  createInkBlot(e.clientX, e.clientY);
+});
+
+function createInkBlot(x, y) {
+  const ink = document.createElement('span');
+  ink.className = 'ink-blot';
+  // Tamaño y forma aleatoria
+  const w = 10 + Math.random() * 10;
+  const h = 8 + Math.random() * 12;
+  ink.style.width = w + 'px';
+  ink.style.height = h + 'px';
+  ink.style.left = (x - w / 2) + 'px';
+  ink.style.top = (y - h / 2) + 'px';
+  ink.style.transform = `rotate(${Math.random() * 60 - 30}deg) scale(${0.8 + Math.random() * 0.4})`;
+  document.body.appendChild(ink);
+  setTimeout(() => ink.remove(), 700);
+}
