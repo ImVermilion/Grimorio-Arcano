@@ -376,12 +376,20 @@ function renderPageEditors() {
 
 function saveEntry() {
   const title = document.getElementById('entryTitle').value.trim();
-  const pages = window.editingPages;
+  const size = document.getElementById('imageSize')?.value || 'medium';
 
   if (!title) {
     alert(t('El título no puede estar vacío.'));
     return;
   }
+
+  const pages = window.editingPages.map(page => {
+    const content = page.text || '';
+    const position = page.imagePosition || 'top';
+    const imageTop = position === 'top' ? page.image || '' : '';
+    const imageBottom = position === 'bottom' ? page.image || '' : '';
+    return { content, imageTop, imageBottom, size };
+  });
 
   if (editing && currentCategoryIndex !== null && currentEntryIndex !== null) {
     const entry = grimoire[currentCategoryIndex].entries[currentEntryIndex];
@@ -397,9 +405,10 @@ function saveEntry() {
   renderCategories();
   editing = false;
   hideEntryForm();
-
   showEntryContent(currentCategoryIndex, currentEntryIndex);
 }
+
+
 
 function removeEntry(categoryIndex, entryIndex) {
   if (!confirm(t('¿Seguro que quieres eliminar esta entrada?'))) return;
@@ -435,16 +444,28 @@ function showEntryContent(categoryIndex, entryIndex) {
   function renderPage(index) {
     container.innerHTML = '';
     const page = entry.pages[index];
+    const block = document.createElement('div');
+    block.className = 'page-content-block';
 
-    let contenido = '';
-    if (page.image && page.imagePosition === 'top') {
-      contenido += `<img src="${page.image}" class="entry-image">`;
+    if (page.imageTop) {
+      const imgTop = document.createElement('img');
+      imgTop.src = page.imageTop;
+      imgTop.className = 'entry-image ' + (page.size || 'medium');
+      block.appendChild(imgTop);
     }
-    contenido += `<p>${page.text.replace(/\n/g, '<br>')}</p>`;
-    if (page.image && page.imagePosition === 'bottom') {
-      contenido += `<img src="${page.image}" class="entry-image">`;
+
+    const paragraph = document.createElement('p');
+    paragraph.innerHTML = (page.content || '').replace(/\n/g, '<br>');
+    block.appendChild(paragraph);
+
+    if (page.imageBottom) {
+      const imgBottom = document.createElement('img');
+      imgBottom.src = page.imageBottom;
+      imgBottom.className = 'entry-image ' + (page.size || 'medium');
+      block.appendChild(imgBottom);
     }
-    container.innerHTML = `<div class="page-content-block">${contenido}</div>`;
+
+    container.appendChild(block);
 
     if (!editBtn.parentElement) rightPage.appendChild(editBtn);
 
@@ -471,13 +492,32 @@ function showEntryContent(categoryIndex, entryIndex) {
   renderPage(0);
 }
 
+
 function editCurrentEntry() {
   if (currentCategoryIndex === null || currentEntryIndex === null) return;
+
   const entry = grimoire[currentCategoryIndex].entries[currentEntryIndex];
   document.getElementById('entryTitle').value = entry.title;
   editing = true;
-  showEntryForm(entry.pages);
+
+  const convertedPages = entry.pages.map(p => {
+    let text = p.content || p.text || '';
+    let image = p.imageTop || p.imageBottom || null;
+    let imagePosition = p.imageTop ? 'top' : (p.imageBottom ? 'bottom' : 'top');
+    let size = p.size || 'medium';
+
+    return { text, image, imagePosition, size };
+  });
+
+  showEntryForm(convertedPages);
+
+  // Establecer el tamaño actual en el selector
+  const imageSizeField = document.getElementById('imageSize');
+  if (imageSizeField && entry.pages[0]?.size) {
+    imageSizeField.value = entry.pages[0].size;
+  }
 }
+
 
 function resetGrimoire() {
   if (confirm(t('¿Seguro que quieres borrar todo el grimorio?'))) {

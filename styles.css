@@ -640,3 +640,17 @@ body,
   max-width: 100%;
   height: auto;
 }
+
+
+.entry-image.small {
+  width: 100px;
+}
+
+.entry-image.medium {
+  width: 200px;
+}
+
+.entry-image.large {
+  width: 350px;
+}
+

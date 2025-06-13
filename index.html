@@ -35,15 +35,25 @@
   </div>
 
   <!-- Formulario de entrada -->
-  <div id="formOverlayEntry" class="hidden">
-    <div class="formContainer">
-      <h3 data-i18n="Nueva Entrada">Nueva Entrada</h3>
-      <input type="text" id="entryTitle" placeholder="Título del elemento..." data-i18n-placeholder="Título del elemento..." />
-      <div id="entryPagesContainer"></div>
-      <button type="button" onclick="saveEntry()" data-i18n="Guardar">Guardar</button>
-      <button type="button" onclick="hideEntryForm()" data-i18n="Cancelar">Cancelar</button>
-    </div>
+<div id="formOverlayEntry" class="hidden">
+  <div class="formContainer">
+    <h3 data-i18n="Nueva Entrada">Nueva Entrada</h3>
+    <input type="text" id="entryTitle" placeholder="Título del elemento..." data-i18n-placeholder="Título del elemento..." />
+    <div id="entryPagesContainer"></div>
+
+    <!-- NUEVO CAMPO: Selector de tamaño de imagen -->
+    <label for="imageSize" style="margin-top: 8px;">Tamaño de imagen:</label>
+    <select id="imageSize">
+      <option value="small">Pequeño</option>
+      <option value="medium" selected>Mediano</option>
+      <option value="large">Grande</option>
+    </select>
+
+    <button type="button" onclick="saveEntry()" data-i18n="Guardar">Guardar</button>
+    <button type="button" onclick="hideEntryForm()" data-i18n="Cancelar">Cancelar</button>
   </div>
+</div>
+
 
   <div class="side-tab-buttons">
     <button onclick="showCategoryForm()"><span class="tab-icon">📜</span> <span data-i18n="Nueva categoría">Nueva categoría</span></button>
