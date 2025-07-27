@@ -1,6 +1,6 @@
 {
-  "name": "Grimorio Arcano",
-  "short_name": "Grimorio",
+  "name": "My Grimoire",
+  "short_name": "MyGrimoire",
   "start_url": ".",
   "display": "standalone",
   "background_color": "#f4e5c0",

@@ -1,16 +1,15 @@
 body {
   margin: 0;
   padding: 0;
-    background-image: url("background.png");
+  background-image: url("background.png");
   background-size: cover;
   background-repeat: no-repeat;
   background-position: center center;
-  background-attachment: fixed; /* opcional */
+  background-attachment: fixed;
   font-family: 'MedievalSharp', cursive;
   min-height: 100vh;
-  min-width: 100vw;
-  width: 100vw;
-  height: 100vh;
+  width: auto;
+  height: auto;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -18,8 +17,9 @@ body {
 }
 
 .book {
-  width: 800px;
-  height: 450px;
+  width: min(90vw, 900px);
+  height: auto;
+  aspect-ratio: 16 / 9;
   display: flex;
   perspective: 2000px;
   background: #4d0d0d url('https://www.transparenttextures.com/patterns/leather.png');
@@ -28,6 +28,14 @@ body {
   box-shadow: 0 0 60px rgba(0, 0, 0, 0.9);
   position: relative;
   overflow: hidden;
+}
+
+/* Añadimos media queries adicionales para pantallas grandes */
+@media (min-width: 1200px) {
+  .book {
+    width: 1000px;
+    aspect-ratio: 16 / 9;
+  }
 }
 
 .page {
